@@ -16,4 +16,5 @@ FOUNDATION_EXPORT const unsigned char RomanticAudioEngineVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <RomanticAudioEngine/PublicHeader.h>
 
-
+#import <RomanticAudioEngine/RongAudioEngine.h>
+#import <RomanticAudioEngine/RongAudioEngineDefine.h>

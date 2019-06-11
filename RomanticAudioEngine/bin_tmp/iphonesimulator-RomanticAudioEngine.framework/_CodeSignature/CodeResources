@@ -6,7 +6,15 @@
 	<dict>
 		<key>Headers/RomanticAudioEngine.h</key>
 		<data>
-		B/0SD+J7ghgrz1z8YPkSiWzPSf8=
+		Kt6EpZaeSyXYvfde5YDzM+Dtffs=
+		</data>
+		<key>Headers/RongAudioEngine.h</key>
+		<data>
+		A/S3Wv1D/GqUY8COWfclRE8uC+o=
+		</data>
+		<key>Headers/RongAudioEngineDefine.h</key>
+		<data>
+		FmV0ecyeXbtqyVe64VpT9FaAwh8=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -23,11 +31,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			B/0SD+J7ghgrz1z8YPkSiWzPSf8=
+			Kt6EpZaeSyXYvfde5YDzM+Dtffs=
 			</data>
 			<key>hash2</key>
 			<data>
-			c+jw4kJ5Ayh/Sg2gqVa2I3VgMrgAjiiMCYTNcb7CPuE=
+			Nscr+lvEeO0wU1ga2oyvgfTBt0Oxq1r3m9KQQk+MNeQ=
+			</data>
+		</dict>
+		<key>Headers/RongAudioEngine.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			A/S3Wv1D/GqUY8COWfclRE8uC+o=
+			</data>
+			<key>hash2</key>
+			<data>
+			Sgz40mZ5tM2dC3aEzLUJRh7fRNRQ0QEaWb9BsnN4Nqs=
+			</data>
+		</dict>
+		<key>Headers/RongAudioEngineDefine.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			FmV0ecyeXbtqyVe64VpT9FaAwh8=
+			</data>
+			<key>hash2</key>
+			<data>
+			PFUbGUAmUN9PvDOq0wCkF1RyqqkzvHCKmUNfQBW3rgE=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

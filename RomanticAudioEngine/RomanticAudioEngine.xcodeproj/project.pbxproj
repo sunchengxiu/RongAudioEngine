@@ -10,6 +10,9 @@
 		E80B8E4D22AF49A000D00515 /* RomanticAudioEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80B8E4322AF49A000D00515 /* RomanticAudioEngine.framework */; };
 		E80B8E5222AF49A000D00515 /* RomanticAudioEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E80B8E5122AF49A000D00515 /* RomanticAudioEngineTests.m */; };
 		E80B8E5422AF49A000D00515 /* RomanticAudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = E80B8E4622AF49A000D00515 /* RomanticAudioEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E80B8E8422AF4BA000D00515 /* RongAudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = E80B8E8222AF4BA000D00515 /* RongAudioEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E80B8E8522AF4BA000D00515 /* RongAudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = E80B8E8322AF4BA000D00515 /* RongAudioEngine.m */; };
+		E80B8E8722AF4BF500D00515 /* RongAudioEngineDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = E80B8E8622AF4BF500D00515 /* RongAudioEngineDefine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +32,9 @@
 		E80B8E4C22AF49A000D00515 /* RomanticAudioEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RomanticAudioEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E80B8E5122AF49A000D00515 /* RomanticAudioEngineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RomanticAudioEngineTests.m; sourceTree = "<group>"; };
 		E80B8E5322AF49A000D00515 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E80B8E8222AF4BA000D00515 /* RongAudioEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioEngine.h; sourceTree = "<group>"; };
+		E80B8E8322AF4BA000D00515 /* RongAudioEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioEngine.m; sourceTree = "<group>"; };
+		E80B8E8622AF4BF500D00515 /* RongAudioEngineDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioEngineDefine.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,9 @@
 			isa = PBXGroup;
 			children = (
 				E80B8E4622AF49A000D00515 /* RomanticAudioEngine.h */,
+				E80B8E8622AF4BF500D00515 /* RongAudioEngineDefine.h */,
+				E80B8E8222AF4BA000D00515 /* RongAudioEngine.h */,
+				E80B8E8322AF4BA000D00515 /* RongAudioEngine.m */,
 				E80B8E4722AF49A000D00515 /* Info.plist */,
 			);
 			path = RomanticAudioEngine;
@@ -94,6 +103,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E80B8E5422AF49A000D00515 /* RomanticAudioEngine.h in Headers */,
+				E80B8E8722AF4BF500D00515 /* RongAudioEngineDefine.h in Headers */,
+				E80B8E8422AF4BA000D00515 /* RongAudioEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E80B8E8522AF4BA000D00515 /* RongAudioEngine.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +375,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = RomanticAudioEngine/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -388,6 +401,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = RomanticAudioEngine/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
