@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:RongAudioEngine/RongAudioEngine.xcodeproj">
+      location = "group:RomanticAudioEngine/RomanticAudioEngine.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:AudioEngineDemo/AudioEngineDemo.xcodeproj">

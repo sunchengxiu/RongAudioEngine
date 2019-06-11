@@ -1,6 +1,6 @@
 //
-//  RongAudioEngineTests.m
-//  RongAudioEngineTests
+//  RomanticAudioEngineTests.m
+//  RomanticAudioEngineTests
 //
 //  Created by 孙承秀 on 2019/6/11.
 //  Copyright © 2019 RongCloud. All rights reserved.
@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface RongAudioEngineTests : XCTestCase
+@interface RomanticAudioEngineTests : XCTestCase
 
 @end
 
-@implementation RongAudioEngineTests
+@implementation RomanticAudioEngineTests
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.

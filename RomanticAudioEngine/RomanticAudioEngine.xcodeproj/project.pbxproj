@@ -7,179 +7,180 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E80B8E2322AF456800D00515 /* RongAudioEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80B8E1922AF456800D00515 /* RongAudioEngine.framework */; };
-		E80B8E2822AF456800D00515 /* RongAudioEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E80B8E2722AF456800D00515 /* RongAudioEngineTests.m */; };
-		E80B8E2A22AF456800D00515 /* RongAudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = E80B8E1C22AF456800D00515 /* RongAudioEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E80B8E4D22AF49A000D00515 /* RomanticAudioEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80B8E4322AF49A000D00515 /* RomanticAudioEngine.framework */; };
+		E80B8E5222AF49A000D00515 /* RomanticAudioEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E80B8E5122AF49A000D00515 /* RomanticAudioEngineTests.m */; };
+		E80B8E5422AF49A000D00515 /* RomanticAudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = E80B8E4622AF49A000D00515 /* RomanticAudioEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		E80B8E2422AF456800D00515 /* PBXContainerItemProxy */ = {
+		E80B8E4E22AF49A000D00515 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = E80B8E1022AF456800D00515 /* Project object */;
+			containerPortal = E80B8E3A22AF49A000D00515 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = E80B8E1822AF456800D00515;
-			remoteInfo = RongAudioEngine;
+			remoteGlobalIDString = E80B8E4222AF49A000D00515;
+			remoteInfo = RomanticAudioEngine;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E80B8E1922AF456800D00515 /* RongAudioEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RongAudioEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E80B8E1C22AF456800D00515 /* RongAudioEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioEngine.h; sourceTree = "<group>"; };
-		E80B8E1D22AF456800D00515 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E80B8E2222AF456800D00515 /* RongAudioEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RongAudioEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E80B8E2722AF456800D00515 /* RongAudioEngineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioEngineTests.m; sourceTree = "<group>"; };
-		E80B8E2922AF456800D00515 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E80B8E4322AF49A000D00515 /* RomanticAudioEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RomanticAudioEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E80B8E4622AF49A000D00515 /* RomanticAudioEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RomanticAudioEngine.h; sourceTree = "<group>"; };
+		E80B8E4722AF49A000D00515 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E80B8E4C22AF49A000D00515 /* RomanticAudioEngineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RomanticAudioEngineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E80B8E5122AF49A000D00515 /* RomanticAudioEngineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RomanticAudioEngineTests.m; sourceTree = "<group>"; };
+		E80B8E5322AF49A000D00515 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E80B8E1622AF456800D00515 /* Frameworks */ = {
+		E80B8E4022AF49A000D00515 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E80B8E1F22AF456800D00515 /* Frameworks */ = {
+		E80B8E4922AF49A000D00515 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E80B8E2322AF456800D00515 /* RongAudioEngine.framework in Frameworks */,
+				E80B8E4D22AF49A000D00515 /* RomanticAudioEngine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E80B8E0F22AF456800D00515 = {
+		E80B8E3922AF49A000D00515 = {
 			isa = PBXGroup;
 			children = (
-				E80B8E1B22AF456800D00515 /* RongAudioEngine */,
-				E80B8E2622AF456800D00515 /* RongAudioEngineTests */,
-				E80B8E1A22AF456800D00515 /* Products */,
+				E80B8E4522AF49A000D00515 /* RomanticAudioEngine */,
+				E80B8E5022AF49A000D00515 /* RomanticAudioEngineTests */,
+				E80B8E4422AF49A000D00515 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		E80B8E1A22AF456800D00515 /* Products */ = {
+		E80B8E4422AF49A000D00515 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E80B8E1922AF456800D00515 /* RongAudioEngine.framework */,
-				E80B8E2222AF456800D00515 /* RongAudioEngineTests.xctest */,
+				E80B8E4322AF49A000D00515 /* RomanticAudioEngine.framework */,
+				E80B8E4C22AF49A000D00515 /* RomanticAudioEngineTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E80B8E1B22AF456800D00515 /* RongAudioEngine */ = {
+		E80B8E4522AF49A000D00515 /* RomanticAudioEngine */ = {
 			isa = PBXGroup;
 			children = (
-				E80B8E1C22AF456800D00515 /* RongAudioEngine.h */,
-				E80B8E1D22AF456800D00515 /* Info.plist */,
+				E80B8E4622AF49A000D00515 /* RomanticAudioEngine.h */,
+				E80B8E4722AF49A000D00515 /* Info.plist */,
 			);
-			path = RongAudioEngine;
+			path = RomanticAudioEngine;
 			sourceTree = "<group>";
 		};
-		E80B8E2622AF456800D00515 /* RongAudioEngineTests */ = {
+		E80B8E5022AF49A000D00515 /* RomanticAudioEngineTests */ = {
 			isa = PBXGroup;
 			children = (
-				E80B8E2722AF456800D00515 /* RongAudioEngineTests.m */,
-				E80B8E2922AF456800D00515 /* Info.plist */,
+				E80B8E5122AF49A000D00515 /* RomanticAudioEngineTests.m */,
+				E80B8E5322AF49A000D00515 /* Info.plist */,
 			);
-			path = RongAudioEngineTests;
+			path = RomanticAudioEngineTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		E80B8E1422AF456800D00515 /* Headers */ = {
+		E80B8E3E22AF49A000D00515 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E80B8E2A22AF456800D00515 /* RongAudioEngine.h in Headers */,
+				E80B8E5422AF49A000D00515 /* RomanticAudioEngine.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E80B8E1822AF456800D00515 /* RongAudioEngine */ = {
+		E80B8E4222AF49A000D00515 /* RomanticAudioEngine */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E80B8E2D22AF456800D00515 /* Build configuration list for PBXNativeTarget "RongAudioEngine" */;
+			buildConfigurationList = E80B8E5722AF49A000D00515 /* Build configuration list for PBXNativeTarget "RomanticAudioEngine" */;
 			buildPhases = (
-				E80B8E1422AF456800D00515 /* Headers */,
-				E80B8E1522AF456800D00515 /* Sources */,
-				E80B8E1622AF456800D00515 /* Frameworks */,
-				E80B8E1722AF456800D00515 /* Resources */,
+				E80B8E3E22AF49A000D00515 /* Headers */,
+				E80B8E3F22AF49A000D00515 /* Sources */,
+				E80B8E4022AF49A000D00515 /* Frameworks */,
+				E80B8E4122AF49A000D00515 /* Resources */,
+				E80B8E5D22AF49E100D00515 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = RongAudioEngine;
-			productName = RongAudioEngine;
-			productReference = E80B8E1922AF456800D00515 /* RongAudioEngine.framework */;
+			name = RomanticAudioEngine;
+			productName = RomanticAudioEngine;
+			productReference = E80B8E4322AF49A000D00515 /* RomanticAudioEngine.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E80B8E2122AF456800D00515 /* RongAudioEngineTests */ = {
+		E80B8E4B22AF49A000D00515 /* RomanticAudioEngineTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E80B8E3022AF456800D00515 /* Build configuration list for PBXNativeTarget "RongAudioEngineTests" */;
+			buildConfigurationList = E80B8E5A22AF49A000D00515 /* Build configuration list for PBXNativeTarget "RomanticAudioEngineTests" */;
 			buildPhases = (
-				E80B8E1E22AF456800D00515 /* Sources */,
-				E80B8E1F22AF456800D00515 /* Frameworks */,
-				E80B8E2022AF456800D00515 /* Resources */,
+				E80B8E4822AF49A000D00515 /* Sources */,
+				E80B8E4922AF49A000D00515 /* Frameworks */,
+				E80B8E4A22AF49A000D00515 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				E80B8E2522AF456800D00515 /* PBXTargetDependency */,
+				E80B8E4F22AF49A000D00515 /* PBXTargetDependency */,
 			);
-			name = RongAudioEngineTests;
-			productName = RongAudioEngineTests;
-			productReference = E80B8E2222AF456800D00515 /* RongAudioEngineTests.xctest */;
+			name = RomanticAudioEngineTests;
+			productName = RomanticAudioEngineTests;
+			productReference = E80B8E4C22AF49A000D00515 /* RomanticAudioEngineTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		E80B8E1022AF456800D00515 /* Project object */ = {
+		E80B8E3A22AF49A000D00515 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = RongCloud;
 				TargetAttributes = {
-					E80B8E1822AF456800D00515 = {
+					E80B8E4222AF49A000D00515 = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
-					E80B8E2122AF456800D00515 = {
+					E80B8E4B22AF49A000D00515 = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
 				};
 			};
-			buildConfigurationList = E80B8E1322AF456800D00515 /* Build configuration list for PBXProject "RongAudioEngine" */;
+			buildConfigurationList = E80B8E3D22AF49A000D00515 /* Build configuration list for PBXProject "RomanticAudioEngine" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = E80B8E0F22AF456800D00515;
-			productRefGroup = E80B8E1A22AF456800D00515 /* Products */;
+			mainGroup = E80B8E3922AF49A000D00515;
+			productRefGroup = E80B8E4422AF49A000D00515 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E80B8E1822AF456800D00515 /* RongAudioEngine */,
-				E80B8E2122AF456800D00515 /* RongAudioEngineTests */,
+				E80B8E4222AF49A000D00515 /* RomanticAudioEngine */,
+				E80B8E4B22AF49A000D00515 /* RomanticAudioEngineTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		E80B8E1722AF456800D00515 /* Resources */ = {
+		E80B8E4122AF49A000D00515 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E80B8E2022AF456800D00515 /* Resources */ = {
+		E80B8E4A22AF49A000D00515 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -188,34 +189,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		E80B8E5D22AF49E100D00515 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nsh xcodebuild.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		E80B8E1522AF456800D00515 /* Sources */ = {
+		E80B8E3F22AF49A000D00515 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E80B8E1E22AF456800D00515 /* Sources */ = {
+		E80B8E4822AF49A000D00515 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E80B8E2822AF456800D00515 /* RongAudioEngineTests.m in Sources */,
+				E80B8E5222AF49A000D00515 /* RomanticAudioEngineTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		E80B8E2522AF456800D00515 /* PBXTargetDependency */ = {
+		E80B8E4F22AF49A000D00515 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E80B8E1822AF456800D00515 /* RongAudioEngine */;
-			targetProxy = E80B8E2422AF456800D00515 /* PBXContainerItemProxy */;
+			target = E80B8E4222AF49A000D00515 /* RomanticAudioEngine */;
+			targetProxy = E80B8E4E22AF49A000D00515 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		E80B8E2B22AF456800D00515 /* Debug */ = {
+		E80B8E5522AF49A000D00515 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -277,7 +298,7 @@
 			};
 			name = Debug;
 		};
-		E80B8E2C22AF456800D00515 /* Release */ = {
+		E80B8E5622AF49A000D00515 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -333,7 +354,7 @@
 			};
 			name = Release;
 		};
-		E80B8E2E22AF456800D00515 /* Debug */ = {
+		E80B8E5822AF49A000D00515 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -342,7 +363,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = RongAudioEngine/Info.plist;
+				INFOPLIST_FILE = RomanticAudioEngine/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -351,14 +372,14 @@
 				);
 				MACH_O_TYPE = staticlib;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = RongCloud.RongAudioEngine;
+				PRODUCT_BUNDLE_IDENTIFIER = RongCloud.RomanticAudioEngine;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		E80B8E2F22AF456800D00515 /* Release */ = {
+		E80B8E5922AF49A000D00515 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
@@ -367,7 +388,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = RongAudioEngine/Info.plist;
+				INFOPLIST_FILE = RomanticAudioEngine/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -376,40 +397,40 @@
 				);
 				MACH_O_TYPE = staticlib;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = RongCloud.RongAudioEngine;
+				PRODUCT_BUNDLE_IDENTIFIER = RongCloud.RomanticAudioEngine;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		E80B8E3122AF456800D00515 /* Debug */ = {
+		E80B8E5B22AF49A000D00515 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = RongAudioEngineTests/Info.plist;
+				INFOPLIST_FILE = RomanticAudioEngineTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = RongCloud.RongAudioEngineTests;
+				PRODUCT_BUNDLE_IDENTIFIER = RongCloud.RomanticAudioEngineTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		E80B8E3222AF456800D00515 /* Release */ = {
+		E80B8E5C22AF49A000D00515 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = RongAudioEngineTests/Info.plist;
+				INFOPLIST_FILE = RomanticAudioEngineTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = RongCloud.RongAudioEngineTests;
+				PRODUCT_BUNDLE_IDENTIFIER = RongCloud.RomanticAudioEngineTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -418,34 +439,34 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E80B8E1322AF456800D00515 /* Build configuration list for PBXProject "RongAudioEngine" */ = {
+		E80B8E3D22AF49A000D00515 /* Build configuration list for PBXProject "RomanticAudioEngine" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E80B8E2B22AF456800D00515 /* Debug */,
-				E80B8E2C22AF456800D00515 /* Release */,
+				E80B8E5522AF49A000D00515 /* Debug */,
+				E80B8E5622AF49A000D00515 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E80B8E2D22AF456800D00515 /* Build configuration list for PBXNativeTarget "RongAudioEngine" */ = {
+		E80B8E5722AF49A000D00515 /* Build configuration list for PBXNativeTarget "RomanticAudioEngine" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E80B8E2E22AF456800D00515 /* Debug */,
-				E80B8E2F22AF456800D00515 /* Release */,
+				E80B8E5822AF49A000D00515 /* Debug */,
+				E80B8E5922AF49A000D00515 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E80B8E3022AF456800D00515 /* Build configuration list for PBXNativeTarget "RongAudioEngineTests" */ = {
+		E80B8E5A22AF49A000D00515 /* Build configuration list for PBXNativeTarget "RomanticAudioEngineTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E80B8E3122AF456800D00515 /* Debug */,
-				E80B8E3222AF456800D00515 /* Release */,
+				E80B8E5B22AF49A000D00515 /* Debug */,
+				E80B8E5C22AF49A000D00515 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = E80B8E1022AF456800D00515 /* Project object */;
+	rootObject = E80B8E3A22AF49A000D00515 /* Project object */;
 }

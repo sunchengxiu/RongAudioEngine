@@ -15,6 +15,7 @@
 		E80B8DED22AF453900D00515 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E80B8DEC22AF453900D00515 /* main.m */; };
 		E80B8DF722AF453900D00515 /* AudioEngineDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E80B8DF622AF453900D00515 /* AudioEngineDemoTests.m */; };
 		E80B8E0222AF453900D00515 /* AudioEngineDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E80B8E0122AF453900D00515 /* AudioEngineDemoUITests.m */; };
+		E80B8E8122AF4A7900D00515 /* RomanticAudioEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80B8E8022AF4A7900D00515 /* RomanticAudioEngine.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		E80B8DFD22AF453900D00515 /* AudioEngineDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AudioEngineDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E80B8E0122AF453900D00515 /* AudioEngineDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioEngineDemoUITests.m; sourceTree = "<group>"; };
 		E80B8E0322AF453900D00515 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E80B8E8022AF4A7900D00515 /* RomanticAudioEngine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RomanticAudioEngine.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E80B8E8122AF4A7900D00515 /* RomanticAudioEngine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +104,7 @@
 		E80B8DDC22AF453800D00515 /* AudioEngineDemo */ = {
 			isa = PBXGroup;
 			children = (
+				E80B8E7F22AF4A7900D00515 /* framework */,
 				E80B8DDD22AF453800D00515 /* AppDelegate.h */,
 				E80B8DDE22AF453800D00515 /* AppDelegate.m */,
 				E80B8DE022AF453800D00515 /* ViewController.h */,
@@ -131,6 +135,14 @@
 			);
 			path = AudioEngineDemoUITests;
 			sourceTree = "<group>";
+		};
+		E80B8E7F22AF4A7900D00515 /* framework */ = {
+			isa = PBXGroup;
+			children = (
+				E80B8E8022AF4A7900D00515 /* RomanticAudioEngine.framework */,
+			);
+			path = framework;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -436,6 +448,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
 				INFOPLIST_FILE = AudioEngineDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -452,6 +468,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/framework",
+				);
 				INFOPLIST_FILE = AudioEngineDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
