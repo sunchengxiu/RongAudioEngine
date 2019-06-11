@@ -17,6 +17,8 @@
 		E8A95C6422AF57CB00B08D66 /* RongAudioMessageQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A95C6222AF57CB00B08D66 /* RongAudioMessageQueue.m */; };
 		E8A95C6722AF5B6200B08D66 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = E8A95C6522AF5B6200B08D66 /* TPCircularBuffer.c */; };
 		E8A95C6822AF5B6200B08D66 /* TPCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A95C6622AF5B6200B08D66 /* TPCircularBuffer.h */; };
+		E8A95C6B22AF649000B08D66 /* RongAudioUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A95C6922AF649000B08D66 /* RongAudioUtilities.h */; };
+		E8A95C6C22AF649000B08D66 /* RongAudioUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A95C6A22AF649000B08D66 /* RongAudioUtilities.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,8 @@
 		E8A95C6222AF57CB00B08D66 /* RongAudioMessageQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioMessageQueue.m; sourceTree = "<group>"; };
 		E8A95C6522AF5B6200B08D66 /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
 		E8A95C6622AF5B6200B08D66 /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCircularBuffer.h; sourceTree = "<group>"; };
+		E8A95C6922AF649000B08D66 /* RongAudioUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioUtilities.h; sourceTree = "<group>"; };
+		E8A95C6A22AF649000B08D66 /* RongAudioUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioUtilities.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +95,8 @@
 				E80B8E8322AF4BA000D00515 /* RongAudioEngine.m */,
 				E8A95C6122AF57CB00B08D66 /* RongAudioMessageQueue.h */,
 				E8A95C6222AF57CB00B08D66 /* RongAudioMessageQueue.m */,
+				E8A95C6922AF649000B08D66 /* RongAudioUtilities.h */,
+				E8A95C6A22AF649000B08D66 /* RongAudioUtilities.m */,
 				E8A95C6522AF5B6200B08D66 /* TPCircularBuffer.c */,
 				E8A95C6622AF5B6200B08D66 /* TPCircularBuffer.h */,
 				E80B8E4722AF49A000D00515 /* Info.plist */,
@@ -116,6 +122,7 @@
 			files = (
 				E80B8E5422AF49A000D00515 /* RomanticAudioEngine.h in Headers */,
 				E80B8E8722AF4BF500D00515 /* RongAudioEngineDefine.h in Headers */,
+				E8A95C6B22AF649000B08D66 /* RongAudioUtilities.h in Headers */,
 				E80B8E8422AF4BA000D00515 /* RongAudioEngine.h in Headers */,
 				E8A95C6822AF5B6200B08D66 /* TPCircularBuffer.h in Headers */,
 				E8A95C6322AF57CB00B08D66 /* RongAudioMessageQueue.h in Headers */,
@@ -242,6 +249,7 @@
 				E8A95C6722AF5B6200B08D66 /* TPCircularBuffer.c in Sources */,
 				E8A95C6422AF57CB00B08D66 /* RongAudioMessageQueue.m in Sources */,
 				E80B8E8522AF4BA000D00515 /* RongAudioEngine.m in Sources */,
+				E8A95C6C22AF649000B08D66 /* RongAudioUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
