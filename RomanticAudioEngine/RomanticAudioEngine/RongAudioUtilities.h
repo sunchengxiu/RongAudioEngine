@@ -84,6 +84,22 @@ double RongSecondsFromHostTicks(uint64_t ticks) ;
 
 BOOL RongRateLimit(void);
 
+#define RongCheckOSStatus(result,operation) (_RongCheckOSStatus((result),(operation),strrchr(__FILE__, '/')+1,__LINE__))
+static inline BOOL _RongCheckOSStatus(OSStatus result, const char *operation, const char* file, int line) {
+    if ( result != noErr ) {
+        if ( RongRateLimit() ) {
+            int fourCC = CFSwapInt32HostToBig(result);
+            if ( isascii(((char*)&fourCC)[0]) && isascii(((char*)&fourCC)[1]) && isascii(((char*)&fourCC)[2]) ) {
+                NSLog(@"%s:%d: %s: '%4.4s' (%d)", file, line, operation, (char*)&fourCC, (int)result);
+            } else {
+                NSLog(@"%s:%d: %s: %d", file, line, operation, (int)result);
+            }
+        }
+        return NO;
+    }
+    return YES;
+}
+
 @interface RongAudioUtilities : NSObject
 
 @end

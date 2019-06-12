@@ -11,6 +11,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 #import "RongAudioMessageQueue.h"
+#import <RongAudioUtilities.h>
 static const int kMessageBufferLength                  = 8192;
 @interface RongAudioEngineMessageQueue : RongAudioMessageQueue
 
@@ -48,8 +49,16 @@ typedef struct {
     int count;
     input_entry_t * entries;
 } input_table_t;
+
+
+
+
+
 @interface RongAudioEngine(){
     input_table_t      *_inputTable;
+    AUGraph             _audioGraph;
+    AUNode              _ioNode;
+    AudioUnit           _ioAudioUnit;
 }
 @property(nonatomic , assign)BOOL  alloclAudioEngine;
 @property(nonatomic , copy)NSString *audioSessionCategory;
@@ -69,6 +78,9 @@ typedef struct {
 @end
 
 @implementation RongAudioEngine
+static OSStatus ioUnitRenderNotifyCallback(void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData) {
+    return noErr;
+}
 -(id)initWithAudioDescription:(AudioStreamBasicDescription)audioDescription{
     return [self initWithAudioDescription:audioDescription options:RongAudioEngineUnitOptionDefaults];
 }
@@ -100,12 +112,43 @@ typedef struct {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioRouteChangeNotification:) name:AVAudioSessionRouteChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaServiceResetNotification:) name:AVAudioSessionMediaServicesWereResetNotification object:nil];
     self.housekeepingTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:[[RongAudioEngineProxy alloc] initWithAudioEngine:self] selector:@selector(housekeeping) userInfo:nil repeats:YES];
-    return nil;
+    return self;
+}
+- (BOOL)setup{
+    OSStatus result = NewAUGraph(&_audioGraph);
+    if (RongCheckOSStatus(result, "NewAUGraph")) {
+        return NO;
+    }
+    BOOL useVoiceProcessing = [self usingVPIO];
+    OSType subtype;
+    if (useVoiceProcessing) {
+        subtype = kAudioUnitSubType_VoiceProcessingIO;
+    } else {
+        subtype = kAudioUnitSubType_RemoteIO;
+    }
+    AudioComponentDescription io_description = {
+        .componentType = kAudioUnitType_Output,
+        .componentSubType = subtype,
+        .componentManufacturer = kAudioUnitManufacturer_Apple,
+        .componentFlags = 0,
+        .componentFlagsMask = 0
+    };
+    result = AUGraphAddNode(_audioGraph, &io_description, &_ioNode);
+    if ( !RongCheckOSStatus(result, "AUGraphAddNode io") ) return NO;
+    
+    result = AUGraphOpen(_audioGraph);
+    if ( !RongCheckOSStatus(result, "AUGraphOpen") ) return NO;
+    
+    result = AUGraphNodeInfo(_audioGraph, _ioNode, &io_description, &_ioAudioUnit);
+    if ( !RongCheckOSStatus(result, "AUGraphNodeInfo") ) return NO;
+    
+    RongCheckOSStatus(AudioUnitAddRenderNotify(_ioAudioUnit, &ioUnitRenderNotifyCallback, (__bridge void*)self), "AudioUnitAddRenderNotify");
+    return YES;
 }
 - (BOOL)initAudioSession{
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     NSMutableString *extraInfo = [NSMutableString string];
-    NSError *error = nil; 
+    NSError *error = nil;
     [self setAudioSessionCategory:_audioSessionCategory];
     if ( audioSession.inputAvailable ) [extraInfo appendFormat:@", input available"];
     if ([audioSession setActive:YES error:&error]) {
@@ -166,6 +209,9 @@ typedef struct {
     if ([audioSession setCategory:audioSessionCategory withOptions:options error:&error]) {
         NSLog(@"audio session set category error");
     }
+}
+- (BOOL)usingVPIO {
+    return _allowVoiceProcessing && _inputEnabled && (!_voiceProcessingOnlyForSpeakerAndMicrophone || _playingThroughDeviceSpeaker);
 }
 - (NSString*)stringFromRouteDescription:(AVAudioSessionRouteDescription*)routeDescription {
     

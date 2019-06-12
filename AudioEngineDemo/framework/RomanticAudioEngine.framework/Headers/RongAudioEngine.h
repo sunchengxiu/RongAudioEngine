@@ -44,7 +44,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) BOOL outputEnabled;
 @property (nonatomic, readonly) BOOL playingThroughDeviceSpeaker;
 @property (nonatomic, readonly) BOOL recordingThroughDeviceMicrophone;
-
+/*!
+ * Whether to only perform voice processing for the SpeakerAndMicrophone route
+ *
+ *  This causes voice processing to only be enabled in the classic echo removal
+ *  scenario, when audio is being played through the device speaker and recorded
+ *  by the device microphone.
+ *
+ *  Default is YES.
+ */
+@property (nonatomic, assign) BOOL voiceProcessingOnlyForSpeakerAndMicrophone;
 @end
 
 NS_ASSUME_NONNULL_END
