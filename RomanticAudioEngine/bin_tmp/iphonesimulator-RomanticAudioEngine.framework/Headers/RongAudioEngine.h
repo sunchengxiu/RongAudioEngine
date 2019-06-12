@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RongAudioEngineDefine.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "RongAudioEngineNotification.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RongAudioEngine : NSObject
@@ -38,6 +39,12 @@ NS_ASSUME_NONNULL_BEGIN
  @return 音频引擎
  */
 - (id)initWithAudioDescription:(AudioStreamBasicDescription)audioDescription options:(RongAudioEngineUnitOptions)options;
+@property (nonatomic, readonly) BOOL inputEnabled;
+
+@property (nonatomic, readonly) BOOL outputEnabled;
+@property (nonatomic, readonly) BOOL playingThroughDeviceSpeaker;
+@property (nonatomic, readonly) BOOL recordingThroughDeviceMicrophone;
+
 @end
 
 NS_ASSUME_NONNULL_END
