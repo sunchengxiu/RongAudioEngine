@@ -51,11 +51,30 @@ static const NSTimeInterval kSynchronousTimeoutInterval  = 1.0;
     }
     return nil;
 }
+-(void)dealloc{
+    [self stopPolling];
+    TPCircularBufferCleanup(&_mainThreadMessageBuffer);
+    TPCircularBufferCleanup(&_realTimeThreadMessageBuffer);
+    pthread_mutex_destroy(&_mutex);
+}
 -(void)startPolling{
     
+    if (!_pollThread) {
+        _pollThread = [[RongAudioMessagePollThread alloc] initWithMessageQueue:self];
+        _lastProcessTime = RongCurrentTimeInHostTicks();
+        _pollThread.pollInterval = kIdleMessagingPollDuration;
+        OSMemoryBarrier();
+        [_pollThread start];
+    }
 }
 -(void)stopPolling{
-    
+    if ( _pollThread ) {
+        [_pollThread cancel];
+        while ( [_pollThread isExecuting] ) {
+            [NSThread sleepForTimeInterval:0.01];
+        }
+        _pollThread = nil;
+    }
 }
 - (BOOL)RongPerformSynchronousMessageExchangeWithBlock:(void (^)(void))block {
     __block BOOL fininsh = NO;
@@ -190,6 +209,34 @@ void RongMessageQueueProcessMessagesOnRealtimeThread(__unsafe_unretained RongAud
         }
         free(message);
     }
+}
+- (void)beginMessageExchangeBlock {
+    pthread_mutex_lock(&_mutex);
+    _holdRealtimeProcessing = YES;
+    pthread_mutex_unlock(&_mutex);
+}
+
+- (void)endMessageExchangeBlock {
+    pthread_mutex_lock(&_mutex);
+    _holdRealtimeProcessing = NO;
+    pthread_mutex_unlock(&_mutex);
+}
+void RongMessageQueueSendMessageToMainThread(__unsafe_unretained RongAudioMessageQueue *THIS,
+                                             RongAudioMessageQueueMessageHandler        handler,
+                                           void                               *userInfo,
+                                           int                                 userInfoLength){
+    int32_t availiableBytes ;
+    message_t *message = TPCircularBufferHead(&THIS->_mainThreadMessageBuffer, &availiableBytes);
+    if (availiableBytes < sizeof(message_t) + userInfoLength) {
+        return;
+    }
+    memset((void*)message, 0, sizeof(message_t));
+    message->handler = handler;
+    message->userInfoLength = userInfoLength;
+    if (userInfoLength > 0) {
+        memcpy((void*)(message + 1), userInfo, userInfoLength);
+    }
+    TPCircularBufferProduce(&THIS->_mainThreadMessageBuffer, sizeof(message_t) + userInfoLength);
 }
 
 -(void)processMainThreadMessages {
