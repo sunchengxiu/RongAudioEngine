@@ -81,6 +81,9 @@ typedef struct {
 static OSStatus ioUnitRenderNotifyCallback(void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData) {
     return noErr;
 }
+static OSStatus inputAvailableCallback(void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData){
+    return noErr;
+}
 -(id)initWithAudioDescription:(AudioStreamBasicDescription)audioDescription{
     return [self initWithAudioDescription:audioDescription options:RongAudioEngineUnitOptionDefaults];
 }
@@ -143,7 +146,23 @@ static OSStatus ioUnitRenderNotifyCallback(void *inRefCon, AudioUnitRenderAction
     if ( !RongCheckOSStatus(result, "AUGraphNodeInfo") ) return NO;
     
     RongCheckOSStatus(AudioUnitAddRenderNotify(_ioAudioUnit, &ioUnitRenderNotifyCallback, (__bridge void*)self), "AudioUnitAddRenderNotify");
+    
+    [self configAudioUnit];
     return YES;
+}
+- (void)configAudioUnit{
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    if (_inputEnabled) {
+        UInt32 enableInputFlag = 1;
+        OSStatus result = AudioUnitSetProperty(_ioAudioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, 1, &enableInputFlag, sizeof(enableInputFlag));
+        RongCheckOSStatus(result, "AudioUnitSetProperty(kAudioOutputUnitProperty_EnableIO)");
+        
+        AURenderCallbackStruct callback;
+        callback.inputProc = &inputAvailableCallback;
+        callback.inputProcRefCon = (__bridge void *)self;
+        result = AudioUnitSetProperty(_ioAudioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Global, 0, &callback, sizeof(callback));
+        RongCheckOSStatus(result, "AudioUnitSetProperty(kAudioOutputUnitProperty_SetInputCallback)");
+    }
 }
 - (BOOL)initAudioSession{
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];

@@ -21,6 +21,11 @@
 		E8A95C6C22AF649000B08D66 /* RongAudioUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A95C6A22AF649000B08D66 /* RongAudioUtilities.m */; };
 		E8A95C6F22B0E76B00B08D66 /* RongAudioEngineNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A95C6D22B0E76B00B08D66 /* RongAudioEngineNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E8A95C7022B0E76B00B08D66 /* RongAudioEngineNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A95C6E22B0E76B00B08D66 /* RongAudioEngineNotification.m */; };
+		E8A95C7322B222EB00B08D66 /* RongAudioUnitChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A95C7122B222EB00B08D66 /* RongAudioUnitChannel.h */; };
+		E8A95C7422B222EB00B08D66 /* RongAudioUnitChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A95C7222B222EB00B08D66 /* RongAudioUnitChannel.m */; };
+		E8A95C7722B2230B00B08D66 /* RongAudioFilePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A95C7522B2230A00B08D66 /* RongAudioFilePlayer.h */; };
+		E8A95C7822B2230B00B08D66 /* RongAudioFilePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A95C7622B2230A00B08D66 /* RongAudioFilePlayer.m */; };
+		E8A95C7A22B2233900B08D66 /* RongAudioPlayerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A95C7922B2233900B08D66 /* RongAudioPlayerProtocol.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +56,11 @@
 		E8A95C6A22AF649000B08D66 /* RongAudioUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioUtilities.m; sourceTree = "<group>"; };
 		E8A95C6D22B0E76B00B08D66 /* RongAudioEngineNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioEngineNotification.h; sourceTree = "<group>"; };
 		E8A95C6E22B0E76B00B08D66 /* RongAudioEngineNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioEngineNotification.m; sourceTree = "<group>"; };
+		E8A95C7122B222EB00B08D66 /* RongAudioUnitChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioUnitChannel.h; sourceTree = "<group>"; };
+		E8A95C7222B222EB00B08D66 /* RongAudioUnitChannel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioUnitChannel.m; sourceTree = "<group>"; };
+		E8A95C7522B2230A00B08D66 /* RongAudioFilePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioFilePlayer.h; sourceTree = "<group>"; };
+		E8A95C7622B2230A00B08D66 /* RongAudioFilePlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioFilePlayer.m; sourceTree = "<group>"; };
+		E8A95C7922B2233900B08D66 /* RongAudioPlayerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioPlayerProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +111,11 @@
 				E80B8E8322AF4BA000D00515 /* RongAudioEngine.m */,
 				E8A95C6122AF57CB00B08D66 /* RongAudioMessageQueue.h */,
 				E8A95C6222AF57CB00B08D66 /* RongAudioMessageQueue.m */,
+				E8A95C7122B222EB00B08D66 /* RongAudioUnitChannel.h */,
+				E8A95C7222B222EB00B08D66 /* RongAudioUnitChannel.m */,
+				E8A95C7522B2230A00B08D66 /* RongAudioFilePlayer.h */,
+				E8A95C7622B2230A00B08D66 /* RongAudioFilePlayer.m */,
+				E8A95C7922B2233900B08D66 /* RongAudioPlayerProtocol.h */,
 				E8A95C6922AF649000B08D66 /* RongAudioUtilities.h */,
 				E8A95C6A22AF649000B08D66 /* RongAudioUtilities.m */,
 				E8A95C6522AF5B6200B08D66 /* TPCircularBuffer.c */,
@@ -127,10 +142,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E80B8E5422AF49A000D00515 /* RomanticAudioEngine.h in Headers */,
+				E8A95C7722B2230B00B08D66 /* RongAudioFilePlayer.h in Headers */,
+				E8A95C7A22B2233900B08D66 /* RongAudioPlayerProtocol.h in Headers */,
 				E8A95C6F22B0E76B00B08D66 /* RongAudioEngineNotification.h in Headers */,
 				E80B8E8722AF4BF500D00515 /* RongAudioEngineDefine.h in Headers */,
 				E8A95C6B22AF649000B08D66 /* RongAudioUtilities.h in Headers */,
 				E80B8E8422AF4BA000D00515 /* RongAudioEngine.h in Headers */,
+				E8A95C7322B222EB00B08D66 /* RongAudioUnitChannel.h in Headers */,
 				E8A95C6822AF5B6200B08D66 /* TPCircularBuffer.h in Headers */,
 				E8A95C6322AF57CB00B08D66 /* RongAudioMessageQueue.h in Headers */,
 			);
@@ -253,10 +271,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8A95C7422B222EB00B08D66 /* RongAudioUnitChannel.m in Sources */,
 				E8A95C6722AF5B6200B08D66 /* TPCircularBuffer.c in Sources */,
 				E8A95C6422AF57CB00B08D66 /* RongAudioMessageQueue.m in Sources */,
 				E8A95C7022B0E76B00B08D66 /* RongAudioEngineNotification.m in Sources */,
 				E80B8E8522AF4BA000D00515 /* RongAudioEngine.m in Sources */,
+				E8A95C7822B2230B00B08D66 /* RongAudioFilePlayer.m in Sources */,
 				E8A95C6C22AF649000B08D66 /* RongAudioUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
