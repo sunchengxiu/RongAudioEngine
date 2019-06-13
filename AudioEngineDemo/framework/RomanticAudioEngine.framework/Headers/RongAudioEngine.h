@@ -44,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) BOOL outputEnabled;
 @property (nonatomic, readonly) BOOL playingThroughDeviceSpeaker;
 @property (nonatomic, readonly) BOOL recordingThroughDeviceMicrophone;
+@property (nonatomic, readonly) BOOL running;
 /*!
  * Whether to only perform voice processing for the SpeakerAndMicrophone route
  *
@@ -54,6 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Default is YES.
  */
 @property (nonatomic, assign) BOOL voiceProcessingOnlyForSpeakerAndMicrophone;
+@property (nonatomic, assign) NSTimeInterval preferredBufferDuration;
+@property (nonatomic, readonly) int numberOfInputChannels;
 @end
 
 NS_ASSUME_NONNULL_END

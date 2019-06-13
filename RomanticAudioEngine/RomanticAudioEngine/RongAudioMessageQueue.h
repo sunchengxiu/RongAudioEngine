@@ -18,8 +18,11 @@ typedef void(^RongAudioMessageQueueMessageHandler)(void *userInfo , int userInfo
 - (void)startPolling;
 
 - (void)stopPolling;
-
+- (void)beginMessageExchangeBlock ;
+- (void)endMessageExchangeBlock;
 -(void)processMainThreadMessages;
+- (BOOL)RongPerformSynchronousMessageExchangeWithBlock:(void (^)(void))block ;
+- (void)RongPerformAsynchronousMessageExchangeWithBlock:(void (^)(void))block responseBlock:(void (^)(void))responseBlock ;
 @end
 
 NS_ASSUME_NONNULL_END

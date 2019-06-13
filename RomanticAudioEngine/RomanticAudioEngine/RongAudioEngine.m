@@ -12,11 +12,43 @@
 #import <UIKit/UIKit.h>
 #import "RongAudioMessageQueue.h"
 #import <RongAudioUtilities.h>
+typedef enum {
+    RongInputModeFixedAudioFormat,
+    RongInputModeVariableAudioFormat
+} RongInputMode;
 static const int kMessageBufferLength                  = 8192;
+static const NSTimeInterval kMaxBufferDurationWithVPIO = 0.01;
+static const UInt32 kMaxFramesPerSlice                 = 4096;
+static const int kInputAudioBufferFrames               = kMaxFramesPerSlice;
 @interface RongAudioEngineMessageQueue : RongAudioMessageQueue
 
 @property(nonatomic , strong)RongAudioEngine *audioEngine;
 
+@end
+@implementation RongAudioEngineMessageQueue
+
+- (void)performAsynchronousMessageExchangeWithBlock:(void (^)(void))block responseBlock:(void (^)(void))responseBlock{
+    if (_audioEngine.running) {
+        [super RongPerformAsynchronousMessageExchangeWithBlock:block responseBlock:responseBlock];
+    } else {
+        if (block) {
+            block();
+        }
+        if (responseBlock) {
+            responseBlock();
+        }
+    }
+}
+- (BOOL)performSynchronousMessageExchangeWithBlock:(void (^)(void))block {
+    if (_audioEngine.running) {
+        [super RongPerformSynchronousMessageExchangeWithBlock:block];
+    } else {
+        if (block) {
+            block();
+        }
+    }
+    return YES;
+}
 @end
 @interface RongAudioEngineProxy : NSProxy
 - (id)initWithAudioEngine:(RongAudioEngine*)audionEngine;
@@ -59,6 +91,7 @@ typedef struct {
     AUGraph             _audioGraph;
     AUNode              _ioNode;
     AudioUnit           _ioAudioUnit;
+    BOOL                _updatingInputStatus;
 }
 @property(nonatomic , assign)BOOL  alloclAudioEngine;
 @property(nonatomic , copy)NSString *audioSessionCategory;
@@ -68,6 +101,7 @@ typedef struct {
 @property(nonatomic , assign)AudioStreamBasicDescription audioDescription;
 @property(nonatomic , assign)BOOL inputEnabled;
 @property(nonatomic , assign)BOOL outputEnabled;
+@property (nonatomic, assign) RongInputMode inputMode;
 @property(nonatomic , assign)BOOL useHardwareSampleRate;
 @property (nonatomic, strong) NSTimer *housekeepingTimer;
 @property(nonatomic , strong)RongAudioEngineMessageQueue *messageQueue;
@@ -84,6 +118,12 @@ static OSStatus ioUnitRenderNotifyCallback(void *inRefCon, AudioUnitRenderAction
 static OSStatus inputAvailableCallback(void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData){
     return noErr;
 }
+static void audioUnitStreamFormatChanged(void *inRefCon, AudioUnit inUnit, AudioUnitPropertyID inID, AudioUnitScope inScope, AudioUnitElement inElement) {
+    
+}
+static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, AudioUnitPropertyID inID, AudioUnitScope inScope, AudioUnitElement inElement) {
+    
+}
 -(id)initWithAudioDescription:(AudioStreamBasicDescription)audioDescription{
     return [self initWithAudioDescription:audioDescription options:RongAudioEngineUnitOptionDefaults];
 }
@@ -98,6 +138,7 @@ static OSStatus inputAvailableCallback(void *inRefCon, AudioUnitRenderActionFlag
     BOOL enableOutput = options & RongAudioEngineUnitOptionEnableOutput;
     _inputEnabled = enableInput;
     _outputEnabled = enableOutput;
+    _inputMode = RongInputModeFixedAudioFormat;
     _audioDescription = audioDescription;
     _audioSessionCategory = enableInput ? (enableOutput ? AVAudioSessionCategoryPlayAndRecord : AVAudioSessionCategoryRecord) : AVAudioSessionCategoryPlayback;
     _allowBluetoothInput = options & RongAudioEngineUnitOptionEnableBluetoothInput;
@@ -150,6 +191,57 @@ static OSStatus inputAvailableCallback(void *inRefCon, AudioUnitRenderActionFlag
     [self configAudioUnit];
     return YES;
 }
+- (void)updateInputDeviceStatus{
+    if (!_audioGraph) {
+        return;
+    }
+    NSAssert(_inputEnabled,@"input must be enable");
+    if (_updatingInputStatus && self.running) {
+        [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+            
+        } responseBlock:^{
+            [self updateInputDeviceStatus];
+        }];
+        return;
+    }
+    _updatingInputStatus = YES;
+    [self beginMessageExchangeBlock];
+    int numberOfChannel = [self lookupNumberOfInputChannels];
+    BOOL inputDescriptionChaned = numberOfChannel != _numberOfInputChannels;
+    AudioStreamBasicDescription rawDescription = _audioDescription;
+    if (numberOfChannel > 0) {
+        RongAudioStreamBasicDescriptionSetChannelsPerFrame(&rawDescription, numberOfChannel);
+        for (int index = 0; index < _inputTable->count; index ++) {
+            input_entry_t *entry = &_inputTable->entries[index];
+            AudioStreamBasicDescription audioDescription = _audioDescription;
+            if (_inputMode == RongInputModeVariableAudioFormat) {
+                audioDescription = rawDescription;
+                if ([(__bridge NSArray *)entry->channelMap count] > 0) {
+                    RongAudioStreamBasicDescriptionSetChannelsPerFrame(&audioDescription, (int)[(__bridge NSArray *)entry->channelMap count]);
+                }
+            }
+            if (!entry->audioBufferList || memcmp(&audioDescription, &entry->audioDescription, sizeof(audioDescription)) != 0) {
+                if (index == 0) {
+                    inputDescriptionChaned = YES;
+                }
+                __block AudioBufferList *priBufferList = entry->audioBufferList;
+                entry->audioDescription = audioDescription;
+                entry->audioBufferList = RongAudioBufferListCreate(entry->audioDescription, kInputAudioBufferFrames);
+                if (priBufferList) {
+                    [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                        
+                    } responseBlock:^{
+                        RongAudioBufferListFree(priBufferList);
+                    }];
+                }
+            }
+           
+            
+        }
+    }
+    
+    
+}
 - (void)configAudioUnit{
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     if (_inputEnabled) {
@@ -162,7 +254,37 @@ static OSStatus inputAvailableCallback(void *inRefCon, AudioUnitRenderActionFlag
         callback.inputProcRefCon = (__bridge void *)self;
         result = AudioUnitSetProperty(_ioAudioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Global, 0, &callback, sizeof(callback));
         RongCheckOSStatus(result, "AudioUnitSetProperty(kAudioOutputUnitProperty_SetInputCallback)");
+    } else {
+        UInt32 enableInputFlag = 0;
+        OSStatus result = AudioUnitSetProperty(_ioAudioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, 1, &enableInputFlag, sizeof(enableInputFlag));
+        RongCheckOSStatus(result, "AudioUnitSetProperty(kAudioOutputUnitProperty_EnableIO)");
     }
+    if (!_outputEnabled) {
+        UInt32 enableOutputFlag = 0;
+        OSStatus result = AudioUnitSetProperty(_ioAudioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, 0, &enableOutputFlag, sizeof(enableOutputFlag));
+        RongCheckOSStatus(result, "AudioUnitSetProperty(kAudioOutputUnitProperty_EnableIO) OUTPUT");
+    }
+    if ([self usingVPIO]) {
+        if (_preferredBufferDuration) {
+            Float32 duration = MAX(_preferredBufferDuration, kMaxBufferDurationWithVPIO);
+            NSError *error = nil;
+            if (![audioSession setPreferredIOBufferDuration:duration error:&error]) {
+                NSLog(@"use VPIO  , audio set preferred io buffer duration error:%@",error);
+            }
+        }
+    } else {
+        if (_preferredBufferDuration) {
+            NSError *error = nil;
+            if (![audioSession setPreferredIOBufferDuration:_preferredBufferDuration error:&error]) {
+                 NSLog(@"not use VPIO  , audio set preferred io buffer duration error:%@",error);
+            }
+        }
+    }
+    
+    RongCheckOSStatus(AudioUnitSetProperty(_ioAudioUnit, kAudioUnitProperty_MaximumFramesPerSlice, kAudioUnitScope_Global, 0, &kMaxFramesPerSlice, sizeof(kMaxFramesPerSlice)), "AudioUnitSetProperty(kAudioUnitProperty_MaximumFramesPerSlice)");
+    RongCheckOSStatus(AudioUnitAddPropertyListener(_ioAudioUnit, kAudioUnitProperty_StreamFormat, audioUnitStreamFormatChanged, (__bridge void *)self), "AudioUnitAddPropertyListener(kAudioUnitProperty_StreamFormat)");
+    RongCheckOSStatus(AudioUnitAddPropertyListener(_ioAudioUnit, kAudioUnitProperty_IsInterAppConnected, interAppConnectedChangeCallback, (__bridge void *)self), "AudioUnitAddPropertyListener(kAudioUnitProperty_IsInterAppConnected)");
+    
 }
 - (BOOL)initAudioSession{
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
@@ -181,9 +303,9 @@ static OSStatus inputAvailableCallback(void *inRefCon, AudioUnitRenderActionFlag
     if (hardwareSampleRate != sampleRate) {
         if (_useHardwareSampleRate) {
             _audioDescription.mSampleRate = hardwareSampleRate;
-            NSLog(@"user hardware sample rate : %@",hardwareSampleRate);
+            NSLog(@"user hardware sample rate : %f",hardwareSampleRate);
         } else {
-             NSLog(@"user client sample rate : %@",sampleRate);
+             NSLog(@"user client sample rate : %f",sampleRate);
         }
     }
     AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
@@ -229,9 +351,45 @@ static OSStatus inputAvailableCallback(void *inRefCon, AudioUnitRenderActionFlag
         NSLog(@"audio session set category error");
     }
 }
+
+-(BOOL)running{
+    Boolean audioUnitIsRunning ;
+    UInt32 size = sizeof(audioUnitIsRunning);
+    if (RongCheckOSStatus(AudioUnitGetProperty(_ioAudioUnit, kAudioOutputUnitProperty_IsRunning, kAudioUnitScope_Global, 0, &audioUnitIsRunning, &size), "kAudioOutputUnitProperty_IsRunning")) {
+        return audioUnitIsRunning;
+    } else {
+        return NO;
+    }
+}
 - (BOOL)usingVPIO {
     return _allowVoiceProcessing && _inputEnabled && (!_voiceProcessingOnlyForSpeakerAndMicrophone || _playingThroughDeviceSpeaker);
 }
+-(void)setPreferredBufferDuration:(NSTimeInterval)preferredBufferDuration{
+    if (_preferredBufferDuration == preferredBufferDuration) {
+        return;
+    }
+    _preferredBufferDuration = preferredBufferDuration;
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    NSError *error = nil;
+    if (![audioSession setPreferredIOBufferDuration:_preferredBufferDuration error:&error]) {
+        NSLog(@"audio session set preferred buffer duration error :%@",error);
+    }
+    NSTimeInterval orinal = audioSession.preferredIOBufferDuration;
+    if (_preferredBufferDuration != orinal) {
+        self.preferredBufferDuration = orinal;
+    }
+}
+- (int)lookupNumberOfInputChannels{
+    return (int)[AVAudioSession sharedInstance].inputNumberOfChannels;
+}
+- (void)beginMessageExchangeBlock {
+    [_messageQueue beginMessageExchangeBlock];
+}
+
+- (void)endMessageExchangeBlock {
+    [_messageQueue endMessageExchangeBlock];
+}
+
 - (NSString*)stringFromRouteDescription:(AVAudioSessionRouteDescription*)routeDescription {
     
     NSMutableString *inputsString = [NSMutableString string];
