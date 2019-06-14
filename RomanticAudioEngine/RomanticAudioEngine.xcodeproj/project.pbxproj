@@ -13,6 +13,8 @@
 		E80B8E8422AF4BA000D00515 /* RongAudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = E80B8E8222AF4BA000D00515 /* RongAudioEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E80B8E8522AF4BA000D00515 /* RongAudioEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = E80B8E8322AF4BA000D00515 /* RongAudioEngine.m */; };
 		E80B8E8722AF4BF500D00515 /* RongAudioEngineDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = E80B8E8622AF4BF500D00515 /* RongAudioEngineDefine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E8449E7822B35011004D0110 /* RongFloatConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = E8449E7622B35011004D0110 /* RongFloatConverter.h */; };
+		E8449E7922B35011004D0110 /* RongFloatConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = E8449E7722B35011004D0110 /* RongFloatConverter.m */; };
 		E8A95C6322AF57CB00B08D66 /* RongAudioMessageQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A95C6122AF57CB00B08D66 /* RongAudioMessageQueue.h */; };
 		E8A95C6422AF57CB00B08D66 /* RongAudioMessageQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E8A95C6222AF57CB00B08D66 /* RongAudioMessageQueue.m */; };
 		E8A95C6722AF5B6200B08D66 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = E8A95C6522AF5B6200B08D66 /* TPCircularBuffer.c */; };
@@ -48,6 +50,8 @@
 		E80B8E8222AF4BA000D00515 /* RongAudioEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioEngine.h; sourceTree = "<group>"; };
 		E80B8E8322AF4BA000D00515 /* RongAudioEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioEngine.m; sourceTree = "<group>"; };
 		E80B8E8622AF4BF500D00515 /* RongAudioEngineDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioEngineDefine.h; sourceTree = "<group>"; };
+		E8449E7622B35011004D0110 /* RongFloatConverter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongFloatConverter.h; sourceTree = "<group>"; };
+		E8449E7722B35011004D0110 /* RongFloatConverter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongFloatConverter.m; sourceTree = "<group>"; };
 		E8A95C6122AF57CB00B08D66 /* RongAudioMessageQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RongAudioMessageQueue.h; sourceTree = "<group>"; };
 		E8A95C6222AF57CB00B08D66 /* RongAudioMessageQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RongAudioMessageQueue.m; sourceTree = "<group>"; };
 		E8A95C6522AF5B6200B08D66 /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
@@ -115,6 +119,8 @@
 				E8A95C7222B222EB00B08D66 /* RongAudioUnitChannel.m */,
 				E8A95C7522B2230A00B08D66 /* RongAudioFilePlayer.h */,
 				E8A95C7622B2230A00B08D66 /* RongAudioFilePlayer.m */,
+				E8449E7622B35011004D0110 /* RongFloatConverter.h */,
+				E8449E7722B35011004D0110 /* RongFloatConverter.m */,
 				E8A95C7922B2233900B08D66 /* RongAudioPlayerProtocol.h */,
 				E8A95C6922AF649000B08D66 /* RongAudioUtilities.h */,
 				E8A95C6A22AF649000B08D66 /* RongAudioUtilities.m */,
@@ -151,6 +157,7 @@
 				E8A95C7322B222EB00B08D66 /* RongAudioUnitChannel.h in Headers */,
 				E8A95C6822AF5B6200B08D66 /* TPCircularBuffer.h in Headers */,
 				E8A95C6322AF57CB00B08D66 /* RongAudioMessageQueue.h in Headers */,
+				E8449E7822B35011004D0110 /* RongFloatConverter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +281,7 @@
 				E8A95C7422B222EB00B08D66 /* RongAudioUnitChannel.m in Sources */,
 				E8A95C6722AF5B6200B08D66 /* TPCircularBuffer.c in Sources */,
 				E8A95C6422AF57CB00B08D66 /* RongAudioMessageQueue.m in Sources */,
+				E8449E7922B35011004D0110 /* RongFloatConverter.m in Sources */,
 				E8A95C7022B0E76B00B08D66 /* RongAudioEngineNotification.m in Sources */,
 				E80B8E8522AF4BA000D00515 /* RongAudioEngine.m in Sources */,
 				E8A95C7822B2230B00B08D66 /* RongAudioFilePlayer.m in Sources */,

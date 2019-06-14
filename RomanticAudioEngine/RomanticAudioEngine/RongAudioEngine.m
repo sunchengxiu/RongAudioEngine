@@ -12,6 +12,7 @@
 #import <UIKit/UIKit.h>
 #import "RongAudioMessageQueue.h"
 #import <RongAudioUtilities.h>
+#import "RongFloatConverter.h"
 typedef enum {
     RongInputModeFixedAudioFormat,
     RongInputModeVariableAudioFormat
@@ -92,6 +93,11 @@ typedef struct {
     AUNode              _ioNode;
     AudioUnit           _ioAudioUnit;
     BOOL                _updatingInputStatus;
+    AudioStreamBasicDescription _rawInputAudioDescription;
+    AudioBufferList    *_inputAudioBufferList;
+    AudioBufferList    *_inputAudioScratchBufferList;
+    RongFloatConverter   *_inputAudioFloatConverter;
+
 }
 @property(nonatomic , assign)BOOL  alloclAudioEngine;
 @property(nonatomic , copy)NSString *audioSessionCategory;
@@ -309,6 +315,9 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
                 }
             }
         }
+        
+        
+        
     }
     
     
