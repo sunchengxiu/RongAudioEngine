@@ -13,6 +13,7 @@
 #import "RongAudioMessageQueue.h"
 #import <RongAudioUtilities.h>
 #import "RongFloatConverter.h"
+#import "RongFloatConverter.h"
 typedef enum {
     RongInputModeFixedAudioFormat,
     RongInputModeVariableAudioFormat
@@ -316,10 +317,106 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
             }
         }
         
-        
-        
+        BOOL rawInputAudioDescriptionChanged = memcmp(&rawDescription, &_rawInputAudioDescription, sizeof(rawDescription)) != 0;
+        if (!_inputAudioBufferList || rawInputAudioDescriptionChanged) {
+            __block AudioBufferList *old = NULL;
+            AudioBufferList *newBufferlist = RongAudioBufferListCreate(rawDescription, kInputAudioBufferFrames);
+            [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                old = self->_inputAudioBufferList;
+                self->_inputAudioBufferList = newBufferlist;
+            } responseBlock:^{
+                if (old) {
+                    RongAudioBufferListFree(old);
+                }
+            }];
+        }
+        AudioBufferList *inputAudioScratchBufferList = _inputAudioScratchBufferList;
+        RongFloatConverter *inputFloatConverter = _inputAudioFloatConverter;
+        if (_useMeasurementMode && _boostBuiltInMicGainInMeasurementMode) {
+            if (!inputAudioScratchBufferList || rawInputAudioDescriptionChanged) {
+                inputAudioScratchBufferList = RongAudioBufferListCreate(rawDescription, kInputAudioBufferFrames);
+            }
+            if (!inputFloatConverter || rawInputAudioDescriptionChanged) {
+                inputFloatConverter = [[RongFloatConverter alloc] initWithSourceFormat:rawDescription];
+            }
+        } else {
+            inputAudioScratchBufferList = NULL;
+            inputFloatConverter = NULL;
+        }
+        if (inputFloatConverter != _inputAudioFloatConverter || inputAudioScratchBufferList != _inputAudioScratchBufferList) {
+            __block AudioBufferList *oldBufferList = NULL;
+            __block RongFloatConverter *oldFloadConverter ;
+            [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                oldBufferList = self->_inputAudioScratchBufferList;
+                oldFloadConverter = self->_inputAudioFloatConverter;
+                self->_inputAudioFloatConverter = inputFloatConverter;
+                self->_inputAudioScratchBufferList = inputAudioScratchBufferList;
+            } responseBlock:^{
+                if (oldBufferList) {
+                    RongAudioBufferListFree(oldBufferList);
+                }
+            }];
+        }
+    } else {
+        __block AudioBufferList *oldBufferList ;
+        [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+            oldBufferList = self->_inputAudioBufferList;
+            self->_inputAudioBufferList = NULL;
+        } responseBlock:^{
+            if (oldBufferList) {
+                RongAudioBufferListFree(oldBufferList);
+            }
+        }];
+        for (int index = 0 ; index < _inputTable->count; index ++) {
+            input_entry_t *entry = &_inputTable->entries[index];
+            if (entry->audioConverter) {
+                __block AudioBufferList *oldBufferList ;
+                __block AudioConverterRef oldConverter;
+                [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                    oldBufferList = entry->audioBufferList;
+                    oldConverter = entry->audioConverter;
+                    entry->audioBufferList = NULL;
+                    entry->audioConverter = NULL;
+                } responseBlock:^{
+                    if (oldConverter) {
+                        AudioConverterDispose(oldConverter);
+                    }
+                    if (oldBufferList) {
+                        RongAudioBufferListFree(oldBufferList);
+                    }
+                }];
+            }
+        }
     }
     
+    BOOL wasRunning = self.running;
+    BOOL unitStop = NO;
+    if (numberOfChannel > 0) {
+        AudioStreamBasicDescription currentDescriptiopn;
+        UInt32 size = sizeof(AudioStreamBasicDescription);
+        OSStatus result = AudioUnitGetProperty(_ioAudioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &currentDescriptiopn, &size);
+        RongCheckOSStatus(result, "AudioUnitGetProperty(kAudioUnitProperty_StreamFormat)");
+        if (memcmp(&rawDescription, &currentDescriptiopn, sizeof(AudioStreamBasicDescription)) != 0) {
+            unitStop = YES;
+            RongCheckOSStatus(AudioOutputUnitStop(_ioAudioUnit), "AudioOutputUnitStop");
+            result = AudioUnitSetProperty(_ioAudioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &rawDescription, sizeof(AudioStreamBasicDescription));
+            RongCheckOSStatus(result, "AudioUnitSetProperty(kAudioUnitProperty_StreamFormat)");
+        }
+    }
+    [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+        self->_rawInputAudioDescription = rawDescription;
+    } responseBlock:^{
+        self->_updatingInputStatus = NO;
+    }];
+    if (numberOfChannel != _numberOfInputChannels) {
+        [self willChangeValueForKey:@"numberOfInputChannels"];
+        _numberOfInputChannels = numberOfChannel;
+        [self didChangeValueForKey:@"numberOfInputChannels"];
+    }
+    [self endMessageExchangeBlock];
+    if (wasRunning && unitStop) {
+        RongCheckOSStatus(AudioOutputUnitStart(_ioAudioUnit), "AudioOutputUnitStart");
+    }
     
 }
 - (void)configAudioUnit{

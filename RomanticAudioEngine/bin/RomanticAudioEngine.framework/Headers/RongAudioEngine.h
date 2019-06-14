@@ -57,6 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL voiceProcessingOnlyForSpeakerAndMicrophone;
 @property (nonatomic, assign) NSTimeInterval preferredBufferDuration;
 @property (nonatomic, readonly) int numberOfInputChannels;
+@property (nonatomic, assign) BOOL useMeasurementMode;
+@property (nonatomic, assign) BOOL boostBuiltInMicGainInMeasurementMode;
 @end
 
 NS_ASSUME_NONNULL_END
