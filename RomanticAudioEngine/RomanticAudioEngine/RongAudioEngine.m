@@ -235,8 +235,79 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
                     }];
                 }
             }
-           
-            
+            BOOL sampleRateConverterRequired = NO;
+            BOOL converterRequired = sampleRateConverterRequired || audioDescription.mChannelsPerFrame != numberOfChannel || (entry->channelMap &&  audioDescription.mChannelsPerFrame != [(__bridge NSArray *)entry->channelMap count]);
+            if (!converterRequired && entry->channelMap) {
+                for (int i = 0 ; i < [(__bridge NSArray *)entry->channelMap count]; i ++) {
+                    id channelMap = ((__bridge  NSArray *)entry->channelMap)[i];
+                    if (([channelMap isKindOfClass:[NSArray class]] && ([channelMap count] > 1 || [channelMap[0] intValue] != i)) || ([channelMap isKindOfClass:[NSNumber class]] && [channelMap intValue] != i)) {
+                        converterRequired = YES;
+                    }
+                    
+                }
+            }
+            if (index == 0) {
+                if (!converterRequired) {
+                    rawDescription = audioDescription;
+                }
+            }
+            if (converterRequired) {
+                UInt32 channelMapSize = sizeof(SInt32) * audioDescription.mChannelsPerFrame;
+                SInt32 *channelMap = (SInt32 *)malloc(channelMapSize);
+                for (int i = 0 ; i < entry->audioDescription.mChannelsPerFrame; i ++) {
+                    if ([(__bridge NSArray *)entry->channelMap count] > 0) {
+                        channelMap[i] = MIN(numberOfChannel - 1, [((__bridge NSArray *)entry->channelMap) count] > i ? [((__bridge NSArray *)entry->channelMap)[i] intValue] : [[((__bridge NSArray *)entry->channelMap) lastObject] intValue]);
+                    } else {
+                        channelMap[i] = MIN(numberOfChannel - 1, i);
+                    }
+                }
+                AudioStreamBasicDescription converterInputFormat ;
+                AudioStreamBasicDescription converterOutputFormat;
+                UInt32 frameSize = sizeof(converterOutputFormat);
+                UInt32 currentChannelMapingSize = 0;
+                if (entry->audioConverter) {
+                    RongCheckOSStatus(AudioConverterGetPropertyInfo(entry->audioConverter, kAudioConverterChannelMap, &currentChannelMapingSize, NULL),  "AudioConverterGetPropertyInfo(kAudioConverterChannelMap)");
+                }
+                SInt32 *currentMaping = (SInt32 *)(currentChannelMapingSize != 0 ? malloc(currentChannelMapingSize) : NULL);
+                if (entry->audioConverter) {
+                    RongCheckOSStatus(AudioConverterGetProperty(entry->audioConverter, kAudioConverterCurrentInputStreamDescription, &frameSize, &converterInputFormat), "AudioConverterGetProperty(kAudioConverterCurrentInputStreamDescription)");
+                    RongCheckOSStatus(AudioConverterGetProperty(entry->audioConverter, kAudioConverterCurrentOutputStreamDescription, &frameSize, &converterOutputFormat), "AudioConverterGetProperty(kAudioConverterCurrentOutputStreamDescription)");
+                    if (currentMaping) {
+                        RongCheckOSStatus(AudioConverterGetProperty(entry->audioConverter, kAudioConverterChannelMap, &currentChannelMapingSize, currentMaping), "AudioConverterGetProperty(kAudioConverterChannelMap)");
+                    }
+                }
+                if (!entry->audioConverter || memcmp(&rawDescription, &converterInputFormat, sizeof(AudioStreamBasicDescription)) != 0 || memcmp(&converterOutputFormat, &entry->audioDescription, sizeof(AudioStreamBasicDescription)) != 0 || (currentChannelMapingSize != channelMapSize) || memcmp(currentMaping, channelMap, channelMapSize) != 0) {
+                    AudioConverterRef newConverter ;
+                    RongCheckOSStatus(AudioConverterNew(&rawDescription, &entry->audioDescription, &newConverter), "AudioConverterNew");
+                    RongCheckOSStatus(AudioConverterSetProperty(newConverter, kAudioConverterChannelMap, channelMapSize, channelMap), "AudioConverterSetProperty(kAudioConverterChannelMap");
+                    __block AudioConverterRef old ;
+                    [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                        old = entry->audioConverter;entry->audioConverter = newConverter;
+                    } responseBlock:^{
+                        if (old) {
+                            AudioConverterDispose(old);
+                        }
+                    }];
+                    if (currentMaping) {
+                        free(currentMaping);
+                    }
+                    if (channelMap) {
+                        free(channelMap);
+                        channelMap = NULL;
+                    }
+                }
+            } else {
+                if (entry->audioConverter) {
+                    __block AudioConverterRef old ;
+                    [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                        old = entry->audioConverter;entry->audioConverter = NULL;
+                    } responseBlock:^{
+                        if (old) {
+                            AudioConverterDispose(old);
+                        }
+                    }];
+                }
+            }
         }
     }
     
