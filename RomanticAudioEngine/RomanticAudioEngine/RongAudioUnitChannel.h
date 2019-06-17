@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id)initWithComponentDescription:(AudioComponentDescription)audioComponentDescription;
 
 - (id)initWithComponentDescription:(AudioComponentDescription)audioComponentDescription
-                preInitializeBlock:(void(^)(AudioUnit audioUnit))preInitializeBlock;
+                preInitializeBlock:(nullable void(^)(AudioUnit audioUnit))preInitializeBlock;
 
 - (double)getParameterValueForId:(AudioUnitParameterID)parameterId;
 

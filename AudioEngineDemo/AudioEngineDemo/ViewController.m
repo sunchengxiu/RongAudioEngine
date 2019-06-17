@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import <RomanticAudioEngine/RomanticAudioEngine.h>
+#import <libkern/OSAtomic.h>
 @interface ViewController ()
 
 @end
