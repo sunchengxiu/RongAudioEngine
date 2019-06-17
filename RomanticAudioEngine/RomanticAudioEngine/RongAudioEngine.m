@@ -566,7 +566,9 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
 - (void)endMessageExchangeBlock {
     [_messageQueue endMessageExchangeBlock];
 }
-
+-(RongAudioEngineMessageQueue *)messageQueue{
+    return _messageQueue;
+}
 - (NSString*)stringFromRouteDescription:(AVAudioSessionRouteDescription*)routeDescription {
     
     NSMutableString *inputsString = [NSMutableString string];

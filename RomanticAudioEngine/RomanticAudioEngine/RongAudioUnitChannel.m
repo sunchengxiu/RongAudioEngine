@@ -127,6 +127,9 @@
         RongCheckOSStatus(AudioUnitSetParameter(_audioUnit, parameterId, kAudioUnitScope_Global, 0, value, 0), "AudioUnitSetParameter");
     }
 }
+-(AudioUnit)audioUnit{
+    return _audioUnit;
+}
 AudioUnit RongAudioUnitChannelGetAudioUnit(__unsafe_unretained RongAudioUnitChannel * channel){
     return channel->_audioUnit;
 }

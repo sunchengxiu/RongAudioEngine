@@ -7,12 +7,15 @@
 //
 
 #import <RomanticAudioEngine/RomanticAudioEngine.h>
+#import "RongAudioMessageQueue.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RongAudioEngine (Private)
 @property (nonatomic, readonly) AUGraph audioGraph;
 @property (nonatomic, readonly) AudioStreamBasicDescription audioDescription;
+@property (nonatomic, readonly, strong)RongAudioMessageQueue *messageQueue;
+
 @end
 
 NS_ASSUME_NONNULL_END

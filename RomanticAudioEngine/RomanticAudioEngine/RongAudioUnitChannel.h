@@ -10,7 +10,11 @@
 #import "RongAudioEngine.h"
 #import "RongAudioPlayerProtocol.h"
 NS_ASSUME_NONNULL_BEGIN
-
+typedef OSStatus (*RongAudioRenderCallback) (__unsafe_unretained id    channel,
+                                             __unsafe_unretained RongAudioEngine *audioEngine,
+                                             const AudioTimeStamp     *time,
+                                             UInt32                    frames,
+                                             AudioBufferList          *audio);
 @interface RongAudioUnitChannel : NSObject<RongAudioPlayerProtocol>
 - (id)initWithComponentDescription:(AudioComponentDescription)audioComponentDescription;
 
