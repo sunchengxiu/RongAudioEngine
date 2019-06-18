@@ -114,11 +114,63 @@
 -(NSTimeInterval)regionDuration{
     return _regionDuration;
 }
+-(void)setRegionDuration:(NSTimeInterval)regionDuration{
+    if (regionDuration < 0) {
+        regionDuration = 0;
+    }
+    _regionDuration = regionDuration;
+    if (_playhead < self.regionStartTime || _playhead > self.regionStartTime + regionDuration) {
+        _playhead = self.regionStartTime * _fileDescription.mSampleRate;
+    }
+    [self schedulePlayRegionFromPosition:_regionStartTime * _fileDescription.mSampleRate];
+}
 -(NSTimeInterval)regionStartTime{
     return _regionStartTime;
 }
+-(void)setRegionStartTime:(NSTimeInterval)regionStartTime{
+    if (regionStartTime < 0) {
+        regionStartTime = 0;
+    }
+    if (regionStartTime > _lengthInFrames / _fileDescription.mSampleRate) {
+        regionStartTime = _lengthInFrames / _fileDescription.mSampleRate;
+    }
+    _regionStartTime = regionStartTime;
+    if (_playhead < regionStartTime || _playhead > regionStartTime + self.regionDuration) {
+        _playhead = regionStartTime * _fileDescription.mSampleRate;
+    }
+    [self schedulePlayRegionFromPosition:(UInt32)(_regionStartTime * _fileDescription.mSampleRate)];
+}
+UInt32 RongAudioFilePlayerGetPlayhead(__unsafe_unretained RongAudioFilePlayer * THIS) {
+    return THIS->_playhead;
+}
 - (NSTimeInterval)duration {
     return (double)_lengthInFrames / (double)_fileDescription.mSampleRate;
+}
+-(NSTimeInterval)currentTime{
+    return _playhead / (_outputDescription.mSampleRate ? _outputDescription.mSampleRate : _fileDescription.mSampleRate);
+}
+-(void)setCurrentTime:(NSTimeInterval)currentTime{
+    if (_lengthInFrames == 0) {
+        return;
+    }
+    double sampleRate = _fileDescription.mSampleRate;
+    [self schedulePlayRegionFromPosition:(UInt32)(self.regionStartTime * sampleRate + ((UInt32)((currentTime - self.regionStartTime) * sampleRate)) % (UInt32)(self.regionDuration * sampleRate))];
+}
+-(void)setChannelIsPlaying:(BOOL)channelIsPlaying{
+    BOOL wasPlaying = self.channelIsPlaying;
+    [super setChannelIsPlaying:channelIsPlaying];
+    if (wasPlaying == channelIsPlaying) {
+        return;
+    }
+    _running = channelIsPlaying;
+    if (self.audioUnit) {
+        if (channelIsPlaying) {
+            double scale = _fileDescription.mSampleRate / _outputDescription.mSampleRate;
+            [self schedulePlayRegionFromPosition:_playhead * scale];
+        } else {
+            RongCheckOSStatus(AudioUnitReset(self.audioUnit, kAudioUnitScope_Global, 0),  "AudioUnitReset");
+        }
+    }
 }
 -(void)dealloc{
     if (_audioFile) {
@@ -175,5 +227,17 @@
     _regionStartTime = 0;
     _regionDuration = length / _fileDescription.mSampleRate;
     return YES;
+}
+
+static OSStatus renderCallback(__unsafe_unretained RongAudioFilePlayer *THIS,
+                               __unsafe_unretained RongAudioEngine *audioController,
+                               const AudioTimeStamp     *time,
+                               UInt32                    frames,
+                               AudioBufferList          *audio){
+    return noErr;
+    
+}
+-(AEAudioRenderCallback)renderCallback{
+    return renderCallback;
 }
 @end

@@ -47,6 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @param time The time, in host ticks, at which to begin playback
  */
 - (void)playAtTime:(uint64_t)time;
+UInt32 RongAudioFilePlayerGetPlayhead(__unsafe_unretained RongAudioFilePlayer * filePlayer);
 @end
 
 NS_ASSUME_NONNULL_END
