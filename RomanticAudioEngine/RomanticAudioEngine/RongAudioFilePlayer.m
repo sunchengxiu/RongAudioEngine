@@ -10,6 +10,7 @@
 #import "RongAudioUtilities.h"
 #import "RongAudioEngine+Private.h"
 #import <libkern/OSAtomic.h>
+#import "RongAudioMessageQueue.h"
 @interface RongAudioFilePlayer()
 {
     AudioFileID _audioFile;
@@ -230,11 +231,52 @@ UInt32 RongAudioFilePlayerGetPlayhead(__unsafe_unretained RongAudioFilePlayer * 
 }
 
 static OSStatus renderCallback(__unsafe_unretained RongAudioFilePlayer *THIS,
-                               __unsafe_unretained RongAudioEngine *audioController,
+                               __unsafe_unretained RongAudioEngine *audioEngine,
                                const AudioTimeStamp     *time,
                                UInt32                    frames,
                                AudioBufferList          *audio){
+    if (!THIS->_running) {
+        return noErr;
+    }
+    uint64_t endTime = THIS->_regionStartTime + RongHostTicksFromSeconds(frames / THIS->_outputDescription.mSampleRate);
+    if (THIS->_regionStartTime && THIS->_regionStartTime > endTime) {
+        return noErr;
+    }
+    uint32_t slientFrames = THIS->_startTime && THIS->_startTime > time->mHostTime ? RongSecondsFromHostTicks(THIS->_startTime - time->mHostTime) * THIS->_outputDescription.mSampleRate : 0;
+    RongAudioBufferListCopyOnStack(scratchAudioBufferList, audio, slientFrames * THIS->_outputDescription.mBytesPerFrame);
+    AudioTimeStamp adjustTime = *time;
+    if (slientFrames > 0) {
+        for (int i = 0 ; audio->mNumberBuffers; i ++ ) {
+            memset(audio->mBuffers[i].mData, 0, slientFrames * THIS->_outputDescription.mBytesPerFrame);
+        }
+        audio = scratchAudioBufferList;
+        frames -= slientFrames;
+        adjustTime.mHostTime = THIS->_startTime;
+        adjustTime.mSampleTime += slientFrames;
+    }
+    THIS->_startTime = 0;
+    THIS->_superRenderCallback(THIS,audioEngine,&adjustTime , frames , audio);
+    int32_t playHead = THIS->_playhead;
+    int32_t oriPlayHead = THIS->_playhead;
+    uint32_t regionLengthFrames = ceil(THIS->_regionDuration * THIS->_outputDescription.mSampleRate);
+    uint32_t startFrames = ceil(THIS->_regionDuration * THIS->_outputDescription.mSampleRate);
+    if (playHead - startFrames + frames > regionLengthFrames && !THIS->_loop) {
+        UInt32 finalFrames = MIN(frames, (regionLengthFrames - (playHead - startFrames)));
+        for (int i = 0; i < audio->mNumberBuffers; i ++ ) {
+            memset((char *)audio->mBuffers[i].mData + (THIS->_outputDescription.mBytesPerFrame * finalFrames), 0, (frames - finalFrames) * THIS->_outputDescription.mBytesPerFrame);
+        }
+        AudioUnitReset(RongAudioUnitChannelGetAudioUnit(THIS), kAudioUnitScope_Global, 0);
+        if ( OSAtomicCompareAndSwap32(NO, YES, &THIS->_playbackStoppedCallbackScheduled) ) {
+            RongAudioEngineSendAsynchronousMessageToMainThread(THIS->_audioEngine, RongAudioFilePlayerNotifyCompletion, &THIS, sizeof(RongAudioFilePlayer*));
+//            RongAudioEngineSendAsynchronousMessageToMainThread(THIS->_audioEngine, <#^(void * _Nullable userInfo, int userInfoLength)handler#>, <#void * _Nonnull userInfo#>, <#int userInfoLength#>)
+        }
+        
+        THIS->_running = NO;
+    }
     return noErr;
+    
+}
+static void RongAudioFilePlayerNotifyCompletion(void *userInfo, int userInfoLength) {
     
 }
 -(AEAudioRenderCallback)renderCallback{

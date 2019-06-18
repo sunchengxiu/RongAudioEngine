@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-
+typedef void(*RongAudioMessageQueueMessageHandler)(void * _Nullable userInfo , int userInfoLength);
 NS_ASSUME_NONNULL_BEGIN
-typedef void(^RongAudioMessageQueueMessageHandler)(void *userInfo , int userInfoLength);
+
 @interface RongAudioMessageQueue : NSObject
 @property (nonatomic, assign) NSTimeInterval autoProcessTimeout;
 - (instancetype)init;
@@ -23,6 +23,10 @@ typedef void(^RongAudioMessageQueueMessageHandler)(void *userInfo , int userInfo
 -(void)processMainThreadMessages;
 - (BOOL)RongPerformSynchronousMessageExchangeWithBlock:(void (^)(void))block ;
 - (void)RongPerformAsynchronousMessageExchangeWithBlock:(void (^)(void))block responseBlock:(void (^)(void))responseBlock ;
+void RongMessageQueueSendMessageToMainThread(__unsafe_unretained RongAudioMessageQueue *THIS,
+                                             RongAudioMessageQueueMessageHandler        handler,
+                                             void                               *userInfo,
+                                             int                                 userInfoLength);
 @end
 
 NS_ASSUME_NONNULL_END

@@ -16,6 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) AudioStreamBasicDescription audioDescription;
 @property (nonatomic, readonly, strong)RongAudioMessageQueue *messageQueue;
 
+void RongAudioEngineSendAsynchronousMessageToMainThread(__unsafe_unretained RongAudioEngine *THIS,
+                                                            RongAudioMessageQueueMessageHandler           handler,
+                                                            void                                  *userInfo,
+                                                            int                                    userInfoLength);
 @end
 
 NS_ASSUME_NONNULL_END

@@ -111,7 +111,7 @@ typedef struct {
 @property (nonatomic, assign) RongInputMode inputMode;
 @property(nonatomic , assign)BOOL useHardwareSampleRate;
 @property (nonatomic, strong) NSTimer *housekeepingTimer;
-@property(nonatomic , strong)RongAudioEngineMessageQueue *messageQueue;
+@property(nonatomic , strong)RongAudioMessageQueue *messageQueue;
 @property (nonatomic, assign) NSTimeInterval currentBufferDuration;
 @property (nonatomic, assign) BOOL playingThroughDeviceSpeaker;
 @property (nonatomic, assign) BOOL recordingThroughDeviceMicrophone;
@@ -158,7 +158,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audiobusConnectionsChanged:) name:RongAudioConnectionsChangedNotification object:nil];
     _messageQueue = [[RongAudioEngineMessageQueue alloc] initWithMessageBufferLength:kMessageBufferLength];
-    _messageQueue.audioEngine = self;
+    ((RongAudioEngineMessageQueue *)_messageQueue).audioEngine = self;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(interruptionNotification:) name:AVAudioSessionInterruptionNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioRouteChangeNotification:) name:AVAudioSessionRouteChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaServiceResetNotification:) name:AVAudioSessionMediaServicesWereResetNotification object:nil];
@@ -204,7 +204,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
     }
     NSAssert(_inputEnabled,@"input must be enable");
     if (_updatingInputStatus && self.running) {
-        [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+        [(RongAudioEngineMessageQueue *)_messageQueue performAsynchronousMessageExchangeWithBlock:^{
             
         } responseBlock:^{
             [self updateInputDeviceStatus];
@@ -235,7 +235,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
                 entry->audioDescription = audioDescription;
                 entry->audioBufferList = RongAudioBufferListCreate(entry->audioDescription, kInputAudioBufferFrames);
                 if (priBufferList) {
-                    [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                    [(RongAudioEngineMessageQueue *)_messageQueue performAsynchronousMessageExchangeWithBlock:^{
                         
                     } responseBlock:^{
                         RongAudioBufferListFree(priBufferList);
@@ -288,7 +288,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
                     RongCheckOSStatus(AudioConverterNew(&rawDescription, &entry->audioDescription, &newConverter), "AudioConverterNew");
                     RongCheckOSStatus(AudioConverterSetProperty(newConverter, kAudioConverterChannelMap, channelMapSize, channelMap), "AudioConverterSetProperty(kAudioConverterChannelMap");
                     __block AudioConverterRef old ;
-                    [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                    [(RongAudioEngineMessageQueue *)_messageQueue performAsynchronousMessageExchangeWithBlock:^{
                         old = entry->audioConverter;entry->audioConverter = newConverter;
                     } responseBlock:^{
                         if (old) {
@@ -306,7 +306,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
             } else {
                 if (entry->audioConverter) {
                     __block AudioConverterRef old ;
-                    [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                    [(RongAudioEngineMessageQueue *)_messageQueue performAsynchronousMessageExchangeWithBlock:^{
                         old = entry->audioConverter;entry->audioConverter = NULL;
                     } responseBlock:^{
                         if (old) {
@@ -321,7 +321,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
         if (!_inputAudioBufferList || rawInputAudioDescriptionChanged) {
             __block AudioBufferList *old = NULL;
             AudioBufferList *newBufferlist = RongAudioBufferListCreate(rawDescription, kInputAudioBufferFrames);
-            [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+            [(RongAudioEngineMessageQueue *)_messageQueue performAsynchronousMessageExchangeWithBlock:^{
                 old = self->_inputAudioBufferList;
                 self->_inputAudioBufferList = newBufferlist;
             } responseBlock:^{
@@ -346,7 +346,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
         if (inputFloatConverter != _inputAudioFloatConverter || inputAudioScratchBufferList != _inputAudioScratchBufferList) {
             __block AudioBufferList *oldBufferList = NULL;
             __block RongFloatConverter *oldFloadConverter ;
-            [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+            [(RongAudioEngineMessageQueue *)_messageQueue performAsynchronousMessageExchangeWithBlock:^{
                 oldBufferList = self->_inputAudioScratchBufferList;
                 oldFloadConverter = self->_inputAudioFloatConverter;
                 self->_inputAudioFloatConverter = inputFloatConverter;
@@ -359,7 +359,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
         }
     } else {
         __block AudioBufferList *oldBufferList ;
-        [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+        [(RongAudioEngineMessageQueue *)_messageQueue performAsynchronousMessageExchangeWithBlock:^{
             oldBufferList = self->_inputAudioBufferList;
             self->_inputAudioBufferList = NULL;
         } responseBlock:^{
@@ -372,7 +372,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
             if (entry->audioConverter) {
                 __block AudioBufferList *oldBufferList ;
                 __block AudioConverterRef oldConverter;
-                [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+                [(RongAudioEngineMessageQueue *)_messageQueue performAsynchronousMessageExchangeWithBlock:^{
                     oldBufferList = entry->audioBufferList;
                     oldConverter = entry->audioConverter;
                     entry->audioBufferList = NULL;
@@ -403,7 +403,7 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
             RongCheckOSStatus(result, "AudioUnitSetProperty(kAudioUnitProperty_StreamFormat)");
         }
     }
-    [_messageQueue performAsynchronousMessageExchangeWithBlock:^{
+    [(RongAudioEngineMessageQueue *)_messageQueue performAsynchronousMessageExchangeWithBlock:^{
         self->_rawInputAudioDescription = rawDescription;
     } responseBlock:^{
         self->_updatingInputStatus = NO;
@@ -601,5 +601,12 @@ static void interAppConnectedChangeCallback(void *inRefCon, AudioUnit inUnit, Au
 }
 -(void)audiobusConnectionsChanged:(NSNotification*)notification{
     
+}
+
+void RongAudioEngineSendAsynchronousMessageToMainThread(__unsafe_unretained RongAudioEngine *THIS,
+                                                            RongAudioMessageQueueMessageHandler           handler,
+                                                          void                                  *userInfo,
+                                                          int                                    userInfoLength) {
+    RongMessageQueueSendMessageToMainThread(THIS->_messageQueue, handler, userInfo, userInfoLength);
 }
 @end
