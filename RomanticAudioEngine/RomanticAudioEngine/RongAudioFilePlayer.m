@@ -259,7 +259,7 @@ static OSStatus renderCallback(__unsafe_unretained RongAudioFilePlayer *THIS,
     int32_t playHead = THIS->_playhead;
     int32_t oriPlayHead = THIS->_playhead;
     uint32_t regionLengthFrames = ceil(THIS->_regionDuration * THIS->_outputDescription.mSampleRate);
-    uint32_t startFrames = ceil(THIS->_regionDuration * THIS->_outputDescription.mSampleRate);
+    uint32_t startFrames = ceil(THIS->_regionStartTime * THIS->_outputDescription.mSampleRate);
     if (playHead - startFrames + frames > regionLengthFrames && !THIS->_loop) {
         UInt32 finalFrames = MIN(frames, (regionLengthFrames - (playHead - startFrames)));
         for (int i = 0; i < audio->mNumberBuffers; i ++ ) {
@@ -268,11 +268,12 @@ static OSStatus renderCallback(__unsafe_unretained RongAudioFilePlayer *THIS,
         AudioUnitReset(RongAudioUnitChannelGetAudioUnit(THIS), kAudioUnitScope_Global, 0);
         if ( OSAtomicCompareAndSwap32(NO, YES, &THIS->_playbackStoppedCallbackScheduled) ) {
             RongAudioEngineSendAsynchronousMessageToMainThread(THIS->_audioEngine, RongAudioFilePlayerNotifyCompletion, &THIS, sizeof(RongAudioFilePlayer*));
-//            RongAudioEngineSendAsynchronousMessageToMainThread(THIS->_audioEngine, <#^(void * _Nullable userInfo, int userInfoLength)handler#>, <#void * _Nonnull userInfo#>, <#int userInfoLength#>)
         }
         
         THIS->_running = NO;
     }
+    playHead = startFrames + (playHead - startFrames + frames) % regionLengthFrames;
+    OSAtomicCompareAndSwap32(oriPlayHead, playHead, &THIS->_playbackStoppedCallbackScheduled);
     return noErr;
     
 }
