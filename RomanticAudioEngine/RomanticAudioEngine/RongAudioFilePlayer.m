@@ -273,7 +273,7 @@ static OSStatus renderCallback(__unsafe_unretained RongAudioFilePlayer *THIS,
         THIS->_running = NO;
     }
     playHead = startFrames + (playHead - startFrames + frames) % regionLengthFrames;
-    OSAtomicCompareAndSwap32(oriPlayHead, playHead, &THIS->_playbackStoppedCallbackScheduled);
+    OSAtomicCompareAndSwap32(oriPlayHead, playHead, &THIS->_playhead);
     return noErr;
     
 }
