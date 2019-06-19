@@ -20,6 +20,8 @@ typedef void (*RongMixerBufferSourceRenderCallback) (RongMixerBufferSource      
                                                    AudioBufferList          *audio,
                                                    const AudioTimeStamp     *inTimeStamp,
                                                    void                     *userInfo);
+@property (nonatomic, assign) AudioStreamBasicDescription clientFormat;
+@property (nonatomic, assign) NSTimeInterval sourceIdleThreshold;
 @end
 
 NS_ASSUME_NONNULL_END
